@@ -52,7 +52,7 @@ class Config(Cog):
     scopes = ["https://www.googleapis.com/auth/spreadsheets"]
 
     credentials = service_account.Credentials.from_service_account_file(
-        "/etc/secrets/google-service-account.json",
+        "/etc/secrets/credentials.json",
         scopes=scopes,
     )
     service = discovery.build("sheets", "v4", credentials=credentials)
