@@ -7,7 +7,7 @@ from discord.ext import commands
 from cogs import config as cfg
 
 Cog = commands.Cog
-invites = {SxCN3xDDHs}
+invites = {"SxCN3xDDHs"}
 
 
 class Invites(Cog):
