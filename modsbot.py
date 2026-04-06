@@ -296,11 +296,14 @@ def executor():
         time.sleep(1)
 
 import os
+from keep_alive import keep_alive
 
 if __name__ == "__main__":
     token = os.getenv("DISCORD_TOKEN")
     if not token:
         raise RuntimeError("DISCORD_TOKEN is not set")
+
+    keep_alive()
 
     x = threading.Thread(target=executor, args=(), daemon=True)
     x.start()
