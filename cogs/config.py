@@ -50,10 +50,10 @@ class Config(Cog):
     config = None
 
     scopes = ["https://www.googleapis.com/auth/spreadsheets"]
-    secret_file = os.path.join(os.getcwd(), "config/credentials.json")
 
     credentials = service_account.Credentials.from_service_account_file(
-        secret_file, scopes=scopes
+        "/etc/secrets/google-service-account.json",
+        scopes=scopes,
     )
     service = discovery.build("sheets", "v4", credentials=credentials)
 
