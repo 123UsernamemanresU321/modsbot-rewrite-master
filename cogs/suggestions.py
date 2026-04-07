@@ -296,44 +296,44 @@ class Suggestions(Cog):
             # Release the lock
             self.lock = False
 
-@commands.command()
-@commands.is_owner()
-async def index_suggestions(self, ctx, *, channel: int):
-    channel_obj = self.bot.get_channel(channel)
-    if channel_obj is None:
-        await ctx.send("Channel not found.")
-        return
-
-    messages = [x async for x in channel_obj.history(limit=200)]
-    messages.reverse()  # oldest first
-
-    values = []
-    for i, message in enumerate(messages, start=1):
+    @commands.command()
+    @commands.is_owner()
+    async def index_suggestions(self, ctx, *, channel: int):
+        channel_obj = self.bot.get_channel(channel)
+        if channel_obj is None:
+            await ctx.send("Channel not found.")
+            return
+    
+        messages = [x async for x in channel_obj.history(limit=200)]
+        messages.reverse()  # oldest first
+    
         values = []
-    for i, message in enumerate(reversed(messages), start=1):
-        values.append([
-            i,                              # Id
-            str(message.id),                # Msg Id
-            message.created_at.isoformat(), # Time
-            message.author.name,            # User
-            str(message.author.id),         # UserID
-            "Pending",                      # Status
-            0,                              # C (status index)
-            message.content,                # Suggestion
-            "",                             # Reason
-            message.jump_url,               # Jump_Url
-        ])
-
-    r_body = {"values": values}
-    cfg.Config.service.spreadsheets().values().append(
-        spreadsheetId=cfg.Config.config["suggestion_sheet"],
-        range="Suggestions!A1",
-        valueInputOption="RAW",
-        insertDataOption="INSERT_ROWS",
-        body=r_body,
-    ).execute()
-
-    await ctx.send(f"Indexed {len(values)} messages.")
+        for i, message in enumerate(messages, start=1):
+            values = []
+        for i, message in enumerate(reversed(messages), start=1):
+            values.append([
+                i,                              # Id
+                str(message.id),                # Msg Id
+                message.created_at.isoformat(), # Time
+                message.author.name,            # User
+                str(message.author.id),         # UserID
+                "Pending",                      # Status
+                0,                              # C (status index)
+                message.content,                # Suggestion
+                "",                             # Reason
+                message.jump_url,               # Jump_Url
+            ])
+    
+        r_body = {"values": values}
+        cfg.Config.service.spreadsheets().values().append(
+            spreadsheetId=cfg.Config.config["suggestion_sheet"],
+            range="Suggestions!A1",
+            valueInputOption="RAW",
+            insertDataOption="INSERT_ROWS",
+            body=r_body,
+        ).execute()
+    
+        await ctx.send(f"Indexed {len(values)} messages.")
 
     @commands.command()
     @commands.is_owner()
