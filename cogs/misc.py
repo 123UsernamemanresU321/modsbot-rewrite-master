@@ -7,7 +7,7 @@ from discord.ext import commands
 from cogs import config as cfg
 
 Cog = commands.Cog
-word_file = "/usr/share/dict/words"
+word_file = "data/words.txt"
 words = open(word_file).read().splitlines()
 waiting_for = set()
 aphasiad = set()
