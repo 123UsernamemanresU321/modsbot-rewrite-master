@@ -299,6 +299,8 @@ import os
 from keep_alive import keep_alive
 
 if __name__ == "__main__":
+    import asyncio
+
     token = os.getenv("DISCORD_TOKEN")
     if not token:
         raise RuntimeError("DISCORD_TOKEN is not set")
@@ -307,4 +309,15 @@ if __name__ == "__main__":
 
     x = threading.Thread(target=executor, args=(), daemon=True)
     x.start()
-    MODSBot(config["prefix"]).run(token)
+
+    async def start_bot():
+        await asyncio.sleep(15)
+        bot = MODSBot(config["prefix"])
+        await bot.start(token)
+
+    while True:
+        try:
+            asyncio.run(start_bot())
+        except Exception as e:
+            print(f"Bot crashed: {e}")
+            time.sleep(30)
